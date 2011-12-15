@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.DBSession;
+
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
 
@@ -39,7 +41,11 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		// maro to byl
+<<<<<<< OURS
 		// maro to byk?
+=======
+		DBSession dbs = new DBSession();
+>>>>>>> THEIRS
 	}
 
 }

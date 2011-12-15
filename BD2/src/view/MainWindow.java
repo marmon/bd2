@@ -39,6 +39,7 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		// maro to byl
+		// maro to byk?
 	}
 
 }

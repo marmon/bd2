@@ -41,11 +41,9 @@ public class MainWindow extends JFrame {
 		contentPane.setLayout(new BorderLayout(0, 0));
 		setContentPane(contentPane);
 		// maro to byl
-<<<<<<< OURS
 		// maro to byk?
-=======
+
 		DBSession dbs = new DBSession();
->>>>>>> THEIRS
 	}
 
 }

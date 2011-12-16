@@ -1,15 +1,15 @@
 package dao;
 
-import java.util.Collection;
+import java.sql.ResultSet;
+import java.util.List;
 
-import javax.sql.RowSet;
 
 public interface CustomerDAO {
 	  public int insertCustomer(Customer customer);
 	  public boolean deleteCustomer(Customer customer);
 	  public Customer findCustomer(int id);
 	  public boolean updateCustomer(Customer customer);
-	  public RowSet selectCustomersRS();
-	  public Collection selectCustomersTO(); // what criteria?
+	  public ResultSet selectCustomersRS();
+	  public List<Customer> selectCustomersTO(); // what criteria?
 
 }

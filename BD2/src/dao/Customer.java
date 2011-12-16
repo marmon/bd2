@@ -2,19 +2,31 @@ package dao;
 
 // entity class
 public class Customer {
-	private int id;
+	private int id;				// this can be null
 	private String documentID;
 	private String name;
 	private String lastName;
 	private int phoneNumber;
-	private String country;
+	private String country;		// this and rest can be null
 	private String city;
 	private String postCode;
 	private String street;
 	private String streetNumber;
 	private int flatNumber;
 	
+	public Customer(){}
 	
+	public Customer(String documentID, String name, String lastName,
+			int phoneNumber) {
+		super();
+		this.documentID = documentID;
+		this.name = name;
+		this.lastName = lastName;
+		this.phoneNumber = phoneNumber;
+	}
+
+
+
 	public int getId() {
 		return id;
 	}

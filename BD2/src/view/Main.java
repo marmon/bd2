@@ -11,11 +11,11 @@ public class Main {
 	 */
 	public static void main(String[] args) {
 		
+		final ControllerInterface controller = new Controller();
 		SwingUtilities.invokeLater(new Runnable() {
 
 			@Override
 			public void run() {
-				ControllerInterface controller = new Controller();
 				MainWindow frame = new MainWindow(controller);
 				frame.setVisible(true);
 			}

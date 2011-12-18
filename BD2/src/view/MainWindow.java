@@ -135,46 +135,44 @@ public class MainWindow extends JFrame {
 			}
 		});
 
-		AbstractAction connectAction = new AbstractAction() {
+		mntmConnect.addActionListener(new ActionListener() {
+			
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(ActionEvent arg0) {
 				controller.connect();
 			}
-		};
+		});
 
-		mntmConnect.addActionListener(connectAction);
 
-		AbstractAction disconnectAction = new AbstractAction() {
+		mntmDisconnect.addActionListener(new ActionListener() {
+			
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(ActionEvent e) {
 				controller.disconnect();
 			}
-		};
-
-		mntmDisconnect.addActionListener(disconnectAction);
-
-		AbstractAction exitAction = new AbstractAction() {
+		});
+		
+		mntmExit.addActionListener(new ActionListener() {
+			
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(ActionEvent e) {
 				controller.disconnect();
 				System.exit(0);
 			}
-		};
+		});
 
-		mntmExit.addActionListener(exitAction);
-
-		AbstractAction aboutAction = new AbstractAction() {
+		
+		mntmAbout.addActionListener(new ActionListener() {
+			
 			@Override
-			public void actionPerformed(ActionEvent evt) {
+			public void actionPerformed(ActionEvent e) {
 				JOptionPane
-						.showMessageDialog(
-								MainWindow.this,
-								"Booking System\n\nAutors:\nMarek Jasiński\nMarek Lewandowski",
-								"About", JOptionPane.INFORMATION_MESSAGE);
+				.showMessageDialog(
+						MainWindow.this,
+						"Booking System\n\nAutors:\nMarek Jasiński\nMarek Lewandowski",
+						"About", JOptionPane.INFORMATION_MESSAGE);
 			}
-		};
-
-		mntmAbout.addActionListener(aboutAction);
+		});
 
 		AbstractAction showAction = new AbstractAction() {
 			@Override

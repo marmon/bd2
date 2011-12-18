@@ -17,7 +17,7 @@ import controller.ControllerListener;
 import oracle.jdbc.pool.OracleDataSource;
 
 public class Controller implements ControllerInterface {
-	public final String url = "jdbc:oracle:thin:bd2a14/bobas47@ikar.elka.pw.edu.pl:1521/elka.elka.pw.edu.pl";
+	public static final String URL = "jdbc:oracle:thin:bd2a14/bobas47@ikar.elka.pw.edu.pl:1521/elka.elka.pw.edu.pl";
 
 	private ArrayList<ControllerListener> controllerListeners = new ArrayList<ControllerListener>();
 	private Connection conn;
@@ -32,7 +32,7 @@ public class Controller implements ControllerInterface {
 			public void run() {
 				try {
 					OracleDataSource ods = new OracleDataSource();
-					ods.setURL(url);
+					ods.setURL(URL);
 					conn = ods.getConnection();
 					stmt = conn.createStatement();
 					prepStatement = conn

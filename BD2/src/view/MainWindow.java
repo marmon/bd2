@@ -169,7 +169,7 @@ public class MainWindow extends JFrame {
 				JOptionPane
 				.showMessageDialog(
 						MainWindow.this,
-						"Booking System\n\nAutors:\nMarek Jasiński\nMarek Lewandowski",
+						"Booking System\n\nAuthors:\nMarek Jasiński\nMarek Lewandowski",
 						"About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		});

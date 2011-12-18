@@ -135,44 +135,46 @@ public class MainWindow extends JFrame {
 			}
 		});
 
-		mntmConnect.addActionListener(new ActionListener() {
-			
+		AbstractAction connectAction = new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent evt) {
 				controller.connect();
 			}
-		});
+		};
 
+		mntmConnect.addActionListener(connectAction);
 
-		mntmDisconnect.addActionListener(new ActionListener() {
-			
+		AbstractAction disconnectAction = new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent evt) {
 				controller.disconnect();
 			}
-		});
-		
-		mntmExit.addActionListener(new ActionListener() {
-			
+		};
+
+		mntmDisconnect.addActionListener(disconnectAction);
+
+		AbstractAction exitAction = new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent evt) {
 				controller.disconnect();
 				System.exit(0);
 			}
-		});
+		};
 
-		
-		mntmAbout.addActionListener(new ActionListener() {
-			
+		mntmExit.addActionListener(exitAction);
+
+		AbstractAction aboutAction = new AbstractAction() {
 			@Override
-			public void actionPerformed(ActionEvent e) {
+			public void actionPerformed(ActionEvent evt) {
 				JOptionPane
 				.showMessageDialog(
 						MainWindow.this,
 						"Booking System\n\nAuthors:\nMarek Jasiński\nMarek Lewandowski",
 						"About", JOptionPane.INFORMATION_MESSAGE);
 			}
-		});
+		};
+
+		mntmAbout.addActionListener(aboutAction);
 
 		AbstractAction showAction = new AbstractAction() {
 			@Override

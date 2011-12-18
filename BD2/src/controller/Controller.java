@@ -6,11 +6,13 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
+import javax.xml.crypto.dsig.spec.C14NMethodParameterSpec;
 
 import controller.ControllerListener;
 
@@ -19,7 +21,7 @@ import oracle.jdbc.pool.OracleDataSource;
 public class Controller implements ControllerInterface {
 	public static final String URL = "jdbc:oracle:thin:bd2a14/bobas47@ikar.elka.pw.edu.pl:1521/elka.elka.pw.edu.pl";
 
-	private ArrayList<ControllerListener> controllerListeners = new ArrayList<ControllerListener>();
+	private List<ControllerListener> controllerListeners = new LinkedList<ControllerListener>();
 	private Connection conn;
 	private Statement stmt;
 	private PreparedStatement prepStatement;
@@ -104,17 +106,15 @@ public class Controller implements ControllerInterface {
 
 	protected void fireSessionStateChanged(ControllerInterface.State s) {
 		System.out.println("fireSessionStateChanged");
-		Iterator<ControllerListener> i = controllerListeners.iterator();
-		while (i.hasNext()) {
-			((ControllerListener) i.next()).sessionStateChanged(s);
+		for(ControllerListener cl : controllerListeners){
+			cl.sessionStateChanged(s);
 		}
 	}
 
 	protected void fireError(String err) {
 		System.out.println("fireError");
-		Iterator<ControllerListener> i = controllerListeners.iterator();
-		while (i.hasNext()) {
-			((ControllerListener) i.next()).error(err);
+		for(ControllerListener cl : controllerListeners){
+			cl.error(err);
 		}
 	}
 

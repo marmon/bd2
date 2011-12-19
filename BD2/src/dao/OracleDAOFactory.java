@@ -13,7 +13,7 @@ public class OracleDAOFactory extends DAOFactory {
 	// method to create Oracle connections
 	public static Connection createConnection(){
 		OracleDataSource ods;
-		Connection conn = null;;
+		Connection conn = null;
 		try {
 			ods = new OracleDataSource();
 			ods.setURL(DBURL);

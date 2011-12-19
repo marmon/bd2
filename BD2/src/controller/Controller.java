@@ -14,6 +14,9 @@ import javax.swing.table.DefaultTableModel;
 
 
 import controller.ControllerListener;
+import dao.CustomerDAO;
+import dao.DAOFactory;
+import dao.ReservationDAO;
 
 import oracle.jdbc.pool.OracleDataSource;
 
@@ -24,6 +27,18 @@ public class Controller implements ControllerInterface {
 	private Connection conn;
 	private Statement stmt;
 	private PreparedStatement prepStatement;
+	
+	private ControllerInterface.State state = ControllerInterface.State.DISCONNECTED;
+	
+	public Controller() {
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				// TODO
+			}
+		});
+		t.start();
+	}
 
 	@Override
 	public void connect() {
@@ -97,6 +112,12 @@ public class Controller implements ControllerInterface {
 			
 		});
 		t.start();
+	}
+
+	@Override
+	public void book(String firstName, String lastName, String documentID,
+			int phoneNumber, Date from, Date to, int room) throws Exception {
+		// TODO
 	}
 
 	public void addControllerListener(ControllerListener cl) {

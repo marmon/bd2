@@ -12,6 +12,9 @@ import java.awt.event.*;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import com.jgoodies.forms.layout.FormLayout;
+import com.jgoodies.forms.layout.ColumnSpec;
+import com.jgoodies.forms.layout.RowSpec;
 
 @SuppressWarnings("serial")
 public class MainWindow extends JFrame {
@@ -23,6 +26,13 @@ public class MainWindow extends JFrame {
 	private JMenuItem mntmConnect;
 	private JMenuItem mntmDisconnect;
 	private JTable table;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTextField textField_4;
+	private JTextField textField_5;
+	private JTextField textField_6;
 
 	/**
 	 * Create the frame.
@@ -95,6 +105,139 @@ public class MainWindow extends JFrame {
 
 		JPanel bookPanel = new JPanel();
 		tabbedPane.addTab("Book", null, bookPanel, null);
+		bookPanel.setLayout(new BorderLayout(0, 0));
+		
+		JPanel panel = new JPanel();
+		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
+		flowLayout.setAlignment(FlowLayout.RIGHT);
+		bookPanel.add(panel, BorderLayout.SOUTH);
+		
+		JButton btnAdd = new JButton("Add");
+		panel.add(btnAdd);
+		
+		JPanel panel_1 = new JPanel();
+		JScrollPane scrollPane_1 = new JScrollPane(panel_1);
+		panel_1.setLayout(new GridLayout(7, 2, 5, 10));
+		bookPanel.add(scrollPane_1, BorderLayout.CENTER);
+		
+		JPanel panel_3 = new JPanel();
+		FlowLayout flowLayout_1 = (FlowLayout) panel_3.getLayout();
+		flowLayout_1.setAlignment(FlowLayout.RIGHT);
+		panel_1.add(panel_3);
+		
+		JLabel lblFirstName = new JLabel("First Name:");
+		panel_3.add(lblFirstName);
+		
+		JPanel panel_4 = new JPanel();
+		FlowLayout flowLayout_8 = (FlowLayout) panel_4.getLayout();
+		flowLayout_8.setAlignment(FlowLayout.LEFT);
+		panel_1.add(panel_4);
+		
+		textField = new JTextField();
+		panel_4.add(textField);
+		textField.setColumns(10);
+		
+		JPanel panel_5 = new JPanel();
+		FlowLayout flowLayout_2 = (FlowLayout) panel_5.getLayout();
+		flowLayout_2.setAlignment(FlowLayout.RIGHT);
+		panel_1.add(panel_5);
+		
+		JLabel lblLastName = new JLabel("Last Name:");
+		panel_5.add(lblLastName);
+		
+		JPanel panel_6 = new JPanel();
+		FlowLayout flowLayout_9 = (FlowLayout) panel_6.getLayout();
+		flowLayout_9.setAlignment(FlowLayout.LEFT);
+		panel_1.add(panel_6);
+		
+		textField_1 = new JTextField();
+		panel_6.add(textField_1);
+		textField_1.setColumns(10);
+		
+		JPanel panel_7 = new JPanel();
+		FlowLayout flowLayout_3 = (FlowLayout) panel_7.getLayout();
+		flowLayout_3.setAlignment(FlowLayout.RIGHT);
+		panel_1.add(panel_7);
+		
+		JLabel lblDocumentId = new JLabel("Document ID:");
+		panel_7.add(lblDocumentId);
+		
+		JPanel panel_8 = new JPanel();
+		FlowLayout flowLayout_10 = (FlowLayout) panel_8.getLayout();
+		flowLayout_10.setAlignment(FlowLayout.LEFT);
+		panel_1.add(panel_8);
+		
+		textField_2 = new JTextField();
+		panel_8.add(textField_2);
+		textField_2.setColumns(10);
+		
+		JPanel panel_10 = new JPanel();
+		FlowLayout flowLayout_4 = (FlowLayout) panel_10.getLayout();
+		flowLayout_4.setAlignment(FlowLayout.RIGHT);
+		panel_1.add(panel_10);
+		
+		JLabel lblPhoneNumber = new JLabel("Phone number:");
+		panel_10.add(lblPhoneNumber);
+		
+		JPanel panel_2 = new JPanel();
+		FlowLayout flowLayout_11 = (FlowLayout) panel_2.getLayout();
+		flowLayout_11.setAlignment(FlowLayout.LEFT);
+		panel_1.add(panel_2);
+		
+		textField_3 = new JTextField();
+		panel_2.add(textField_3);
+		textField_3.setColumns(10);
+		
+		JPanel panel_9 = new JPanel();
+		FlowLayout flowLayout_5 = (FlowLayout) panel_9.getLayout();
+		flowLayout_5.setAlignment(FlowLayout.RIGHT);
+		panel_1.add(panel_9);
+		
+		JLabel lblFrom = new JLabel("From:");
+		panel_9.add(lblFrom);
+		
+		JPanel panel_12 = new JPanel();
+		FlowLayout flowLayout_12 = (FlowLayout) panel_12.getLayout();
+		flowLayout_12.setAlignment(FlowLayout.LEFT);
+		panel_1.add(panel_12);
+		
+		textField_4 = new JTextField();
+		panel_12.add(textField_4);
+		textField_4.setColumns(10);
+		
+		JPanel panel_14 = new JPanel();
+		FlowLayout flowLayout_6 = (FlowLayout) panel_14.getLayout();
+		flowLayout_6.setAlignment(FlowLayout.RIGHT);
+		panel_1.add(panel_14);
+		
+		JLabel lblTo = new JLabel("To:");
+		panel_14.add(lblTo);
+		
+		JPanel panel_11 = new JPanel();
+		FlowLayout flowLayout_13 = (FlowLayout) panel_11.getLayout();
+		flowLayout_13.setAlignment(FlowLayout.LEFT);
+		panel_1.add(panel_11);
+		
+		textField_5 = new JTextField();
+		panel_11.add(textField_5);
+		textField_5.setColumns(10);
+		
+		JPanel panel_13 = new JPanel();
+		FlowLayout flowLayout_7 = (FlowLayout) panel_13.getLayout();
+		flowLayout_7.setAlignment(FlowLayout.RIGHT);
+		panel_1.add(panel_13);
+		
+		JLabel lblRoom = new JLabel("Room:");
+		panel_13.add(lblRoom);
+		
+		JPanel panel_15 = new JPanel();
+		FlowLayout flowLayout_14 = (FlowLayout) panel_15.getLayout();
+		flowLayout_14.setAlignment(FlowLayout.LEFT);
+		panel_1.add(panel_15);
+		
+		textField_6 = new JTextField();
+		panel_15.add(textField_6);
+		textField_6.setColumns(10);
 
 		JPanel southPanel = new JPanel();
 		FlowLayout fl_southPanel = (FlowLayout) southPanel.getLayout();
@@ -222,7 +365,7 @@ public class MainWindow extends JFrame {
 	protected void connected() {
 		mntmConnect.setEnabled(false);
 		mntmDisconnect.setEnabled(true);
-		stateLabel.setForeground(Color.GREEN);
+		stateLabel.setForeground(new Color(0, 87, 30));
 		stateLabel.setText(ControllerInterface.State.CONNECTED.toString());
 	}
 

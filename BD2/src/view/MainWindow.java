@@ -388,7 +388,12 @@ public class MainWindow extends JFrame {
 				}
 				
 				int room = Integer.parseInt(roomNumberTextField.getText());
-				controller.book(firstName, lastName, documentID, phoneNumber, from, to, room);
+				try {
+					controller.book(firstName, lastName, documentID, phoneNumber, from, to, room);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 

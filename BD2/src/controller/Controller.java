@@ -140,7 +140,7 @@ public class Controller implements ControllerInterface {
 						
 						String insertBasicCustomer = "INSERT INTO BASIC_CUSTOMERS VALUES(?,?,?,?)";
 						String selectCustomerID = "SELECT ID_KLIENTA FROM KLIENCI WHERE NUMER_DOKUMENTU = ?";
-						String insertReservation = "INSERT INTO REZERWACJE VALUES (null, ?, ?, null)";
+						String insertReservation = "INSERT INTO REZERWACJE VALUES (null, ?, ?, 0)";
 						String selectReservationID = "SELECT ID_REZERWACJI FROM REZERWACJE WHERE ID_KLIENTA = ? AND DATA_ZALOZENIA = ?";
 						String insertPosition = "INSERT INTO POZYCJE_REZERWACJI VALUES (?,?,?,?)";
 						

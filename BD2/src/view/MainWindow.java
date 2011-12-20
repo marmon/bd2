@@ -5,8 +5,10 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.sql.Date;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 
@@ -127,6 +129,7 @@ public class MainWindow extends JFrame {
 		
 		JButton btnAdd = new JButton("Add");
 		panel.add(btnAdd);
+		
 		
 		JPanel panel_1 = new JPanel();
 		JScrollPane scrollPane_1 = new JScrollPane(panel_1);
@@ -359,6 +362,16 @@ public class MainWindow extends JFrame {
 				}
 			}
 		};
+		
+		btnAdd.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+//				String firstName =  String lastName, String documentID,
+//				int phoneNumber, Date from, Date to, int room
+				//TODO
+			}
+		});
 
 		fromTextField.addActionListener(showAction);
 		toTextField.addActionListener(showAction);

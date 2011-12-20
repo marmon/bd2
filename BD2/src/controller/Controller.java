@@ -116,8 +116,9 @@ public class Controller implements ControllerInterface {
 
 	@Override
 	public void book(String firstName, String lastName, String documentID,
-			int phoneNumber, Date from, Date to, int room) throws Exception {
-		// TODO
+			int phoneNumber, java.sql.Date from, java.sql.Date to, int room){
+		
+		
 	}
 
 	public void addControllerListener(ControllerListener cl) {

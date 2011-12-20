@@ -10,6 +10,7 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.sql.Date;
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.AbstractAction;
@@ -41,13 +42,13 @@ public class MainWindow extends JFrame {
 	private JMenuItem mntmConnect;
 	private JMenuItem mntmDisconnect;
 	private JTable table;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
+	private JTextField firstNameTextField;
+	private JTextField lastNameTextField;
+	private JTextField documentIDTextField;
+	private JTextField phoneNumberTextField;
+	private JTextField fromDateTextField;
+	private JTextField toDateTextField;
+	private JTextField roomNumberTextField;
 
 	/**
 	 * Create the frame.
@@ -149,9 +150,9 @@ public class MainWindow extends JFrame {
 		flowLayout_8.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_4);
 		
-		textField = new JTextField();
-		panel_4.add(textField);
-		textField.setColumns(10);
+		firstNameTextField = new JTextField();
+		panel_4.add(firstNameTextField);
+		firstNameTextField.setColumns(10);
 		
 		JPanel panel_5 = new JPanel();
 		FlowLayout flowLayout_2 = (FlowLayout) panel_5.getLayout();
@@ -166,9 +167,9 @@ public class MainWindow extends JFrame {
 		flowLayout_9.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_6);
 		
-		textField_1 = new JTextField();
-		panel_6.add(textField_1);
-		textField_1.setColumns(10);
+		lastNameTextField = new JTextField();
+		panel_6.add(lastNameTextField);
+		lastNameTextField.setColumns(10);
 		
 		JPanel panel_7 = new JPanel();
 		FlowLayout flowLayout_3 = (FlowLayout) panel_7.getLayout();
@@ -183,9 +184,9 @@ public class MainWindow extends JFrame {
 		flowLayout_10.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_8);
 		
-		textField_2 = new JTextField();
-		panel_8.add(textField_2);
-		textField_2.setColumns(10);
+		documentIDTextField = new JTextField();
+		panel_8.add(documentIDTextField);
+		documentIDTextField.setColumns(10);
 		
 		JPanel panel_10 = new JPanel();
 		FlowLayout flowLayout_4 = (FlowLayout) panel_10.getLayout();
@@ -200,9 +201,9 @@ public class MainWindow extends JFrame {
 		flowLayout_11.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_2);
 		
-		textField_3 = new JTextField();
-		panel_2.add(textField_3);
-		textField_3.setColumns(10);
+		phoneNumberTextField = new JTextField();
+		panel_2.add(phoneNumberTextField);
+		phoneNumberTextField.setColumns(10);
 		
 		JPanel panel_9 = new JPanel();
 		FlowLayout flowLayout_5 = (FlowLayout) panel_9.getLayout();
@@ -217,9 +218,9 @@ public class MainWindow extends JFrame {
 		flowLayout_12.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_12);
 		
-		textField_4 = new JTextField();
-		panel_12.add(textField_4);
-		textField_4.setColumns(10);
+		fromDateTextField = new JTextField();
+		panel_12.add(fromDateTextField);
+		fromDateTextField.setColumns(10);
 		
 		JPanel panel_14 = new JPanel();
 		FlowLayout flowLayout_6 = (FlowLayout) panel_14.getLayout();
@@ -234,9 +235,9 @@ public class MainWindow extends JFrame {
 		flowLayout_13.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_11);
 		
-		textField_5 = new JTextField();
-		panel_11.add(textField_5);
-		textField_5.setColumns(10);
+		toDateTextField = new JTextField();
+		panel_11.add(toDateTextField);
+		toDateTextField.setColumns(10);
 		
 		JPanel panel_13 = new JPanel();
 		FlowLayout flowLayout_7 = (FlowLayout) panel_13.getLayout();
@@ -251,9 +252,9 @@ public class MainWindow extends JFrame {
 		flowLayout_14.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_15);
 		
-		textField_6 = new JTextField();
-		panel_15.add(textField_6);
-		textField_6.setColumns(10);
+		roomNumberTextField = new JTextField();
+		panel_15.add(roomNumberTextField);
+		roomNumberTextField.setColumns(10);
 
 		JPanel southPanel = new JPanel();
 		FlowLayout fl_southPanel = (FlowLayout) southPanel.getLayout();
@@ -367,9 +368,27 @@ public class MainWindow extends JFrame {
 			
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-//				String firstName =  String lastName, String documentID,
-//				int phoneNumber, Date from, Date to, int room
-				//TODO
+				String firstName = firstNameTextField.getText();
+				String lastName = lastNameTextField.getText();
+				String documentID = documentIDTextField.getText();
+				int phoneNumber = Integer.parseInt(phoneNumberTextField.getText());
+				java.sql.Date from = null;
+				java.sql.Date to = null;
+				DateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+				java.util.Date parsedFromDate = null;
+				java.util.Date parsedToDate = null;
+				try {
+					parsedFromDate = formater.parse(fromDateTextField.getText());
+					parsedToDate = formater.parse(toDateTextField.getText());
+					from = new java.sql.Date(parsedFromDate.getTime());
+					to = new java.sql.Date(parsedToDate.getTime());
+				} catch (ParseException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				int room = Integer.parseInt(roomNumberTextField.getText());
+				controller.book(firstName, lastName, documentID, phoneNumber, from, to, room);
 			}
 		});
 

@@ -1,0 +1,45 @@
+create or replace
+TRIGGER "BASIC_CUSTOMER_INSERT" INSTEAD OF INSERT ON BASIC_CUSTOMERS 
+REFERENCING NEW AS new 
+FOR EACH ROW 
+DECLARE
+	rowcnt number;
+BEGIN
+  SELECT COUNT(*) INTO rowcnt FROM KLIENCI WHERE NUMER_DOKUMENTU = :new.NUMER_DOKUMENTU;
+  IF rowcnt = 0 THEN
+	INSERT INTO KLIENCI VALUES(NULL, :new.NUMER_DOKUMENTU, :new.IMIE, :new.NAZWISKO, :new.NUMER_TELEFONU, NULL, NULL, NULL, NULL, NULL, NULL);
+  ELSE
+	SELECT COUNT(*) INTO rowcnt FROM KLIENCI WHERE NUMER_DOKUMENTU = :new.NUMER_DOKUMENTU and IMIE = :new.IMIE and NAZWISKO = :new.NAZWISKO;
+		IF rowcnt = 0 THEN
+		 raise_application_error (-20999,'Customer credentials does not match. Document might be stolen.');
+		ELSE
+			UPDATE KLIENCI SET NUMER_TELEFONU = :new.NUMER_TELEFONU
+			WHERE NUMER_DOKUMENTU = :new.NUMER_DOKUMENTU;
+		END IF;
+  END IF;
+  
+END;
+
+
+Trigger aktywuje siê w momencie operacji insert na widoku BASIC_CUSTOMERS. Trigger sprawdza czy istnieje klient o podanym numerze dokumentu.
+Jeœli nie istnieje to dodaje nowego klienta do tabeli KLIENCI.
+Jeœli istnieje to sprawdza czy dane s¹ poprawne a dok³adnie czy zgadza siê imiê oraz nazwisko.
+Jeœli tak to zak³adamy, ¿e istnieje mo¿liwoœæ podania innego numeru telefonu ni¿ gdy klient po raz pierwszy odwiedzi³ nasz hotel dlatego te¿
+robimy operacjê update na kliencie zmieniaj¹c mu numer telefonu na nowy. Operacja wykonujê siê nawet gdy numery telefonów siê zgadzaj¹. Jest to zrobione w ten sposób aby nie dodawaæ kolejnego zapytania SELECT do triggera.
+Warto równie¿ dodaæ ¿e trigger w przypadku gdy robimy INSERT powoduje wyzwolenie kolejnego triggera, który ustala sztuczny ID dla nowego klienta. 
+
+
+
+//zrobione	// najpierw zrobic selecta na klientach i sprawdzic czy jest taki klient
+			// jesli nie ma to go wstawic 
+
+// TODO
+			// jesli jest to sprawdzic czy jest taki klient o takim samym id, imieniu, nazwisko
+			// jesli jest to zrobic update na klienci z nowym numerem telefonu
+			// jesli nie ma to error
+
+			
+			
+WIDOK BASIC_CUSTOMERS
+Jest to widok, który zawiera tylko podstawowe i najbardziej potrzebne informacjê o klientach hotelu.
+Informacje to numer_dokumentu, imie, nazwisko oraz numer telefonu.

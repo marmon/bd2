@@ -13,12 +13,6 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
-import controller.ControllerListener;
-import dao.CustomerDAO;
-import dao.DAOFactory;
-import dao.ReservationDAO;
-
 import oracle.jdbc.pool.OracleDataSource;
 
 public class Controller implements ControllerInterface {
@@ -35,7 +29,30 @@ public class Controller implements ControllerInterface {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO
+				ControllerInterface.State currentState = ControllerInterface.State.DISCONNECTED;
+				while (true) {
+					try {
+						if (conn != null) {
+							if (conn.isValid(100))
+								currentState = ControllerInterface.State.CONNECTED;
+							else
+								currentState = ControllerInterface.State.DISCONNECTED;
+							if (!state.equals(currentState)) {
+								state = currentState;
+								fireSessionStateChanged(state);
+							}
+						}
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						continue;
+					}
+				}
 			}
 		});
 		t.start();
@@ -230,14 +247,12 @@ public class Controller implements ControllerInterface {
 	}
 
 	protected void fireSessionStateChanged(ControllerInterface.State s) {
-		System.out.println("fireSessionStateChanged");
 		for(ControllerListener cl : controllerListeners){
 			cl.sessionStateChanged(s);
 		}
 	}
 
 	protected void fireError(String err) {
-		System.out.println("fireError");
 		for(ControllerListener cl : controllerListeners){
 			cl.error(err);
 		}

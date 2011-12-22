@@ -16,7 +16,7 @@ import javax.swing.table.DefaultTableModel;
 import oracle.jdbc.pool.OracleDataSource;
 
 public class Controller implements ControllerInterface {
-	public static final String URL = "jdbc:oracle:thin:bd2a14/bobas47@ikar.elka.pw.edu.pl:1521/elka.elka.pw.edu.pl";
+	public static final String URL = "jdbc:oracle:thin:LOGIN/PASSWORD@ikar.elka.pw.edu.pl:1521/elka.elka.pw.edu.pl";
 
 	private List<ControllerListener> controllerListeners = new LinkedList<ControllerListener>();
 	private Connection conn;
@@ -62,14 +62,14 @@ public class Controller implements ControllerInterface {
 	}
 
 	@Override
-	public void connect() {
+	public void connect(final String login, final String password) {
 		Thread t = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
 					OracleDataSource ods = new OracleDataSource();
-					ods.setURL(URL);
+					ods.setURL(URL.replaceAll("LOGIN/PASSWORD", login + "/" + password));
 					conn = ods.getConnection();
 					stmt = conn.createStatement();
 					

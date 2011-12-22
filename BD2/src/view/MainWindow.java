@@ -20,6 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -55,6 +56,7 @@ public class MainWindow extends JFrame {
 		setTitle("Booking System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 799, 632);
+		setLocationRelativeTo(null);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -284,7 +286,9 @@ public class MainWindow extends JFrame {
 
 			@Override
 			public void newReservationAdded() {
-				JOptionPane.showMessageDialog(MainWindow.this, "New reservation was successfully added.", "New reservation added",
+				JOptionPane.showMessageDialog(MainWindow.this,
+						"New reservation was successfully added.",
+						"New reservation added",
 						JOptionPane.INFORMATION_MESSAGE);
 			}
 
@@ -298,9 +302,48 @@ public class MainWindow extends JFrame {
 		});
 
 		AbstractAction connectAction = new AbstractAction() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				controller.connect();
+				// Create a panel that will be use to put
+				// one JTextField, one JPasswordField and two JLabel
+				JPanel panel = new JPanel();
+
+				// Set JPanel layout using GridLayout
+				panel.setLayout(new GridLayout(4, 1));
+
+				// Create a label with text (Username:)
+				JLabel username = new JLabel("Username:");
+
+				// Create a label with text (Password:)
+				JLabel password = new JLabel("Password:");
+
+				// Create text field that will use to enter username
+				JTextField textField = new JTextField(12);
+
+				// Create password field that will be use to enter password
+				JPasswordField passwordField = new JPasswordField(12);
+
+				// Add label with text (username) into created panel
+				panel.add(username);
+
+				// Add text field into created panel
+				panel.add(textField);
+
+				// Add label with text (password) into created panel
+				panel.add(password);
+
+				// Add password field into created panel
+				panel.add(passwordField);
+
+				// Show JOptionPane that will ask user for username and password
+				int a = JOptionPane.showConfirmDialog(MainWindow.this, panel,
+						"Put username and password",
+						JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+				if (a == JOptionPane.OK_OPTION) {
+					controller.connect(textField.getText(), passwordField.getText());
+				}
 			}
 		};
 

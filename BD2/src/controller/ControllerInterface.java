@@ -9,7 +9,7 @@ public interface ControllerInterface {
 		CONNECTED, DISCONNECTED
 	};
 
-	public void connect();
+	public void connect(String login, String password);
 
 	public void disconnect();
 

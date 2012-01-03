@@ -13,21 +13,20 @@ import java.util.List;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 
-
-import controller.ControllerListener;
-import dao.CustomerDAO;
-import dao.DAOFactory;
-import dao.ReservationDAO;
-
 import oracle.jdbc.pool.OracleDataSource;
 
 public class Controller implements ControllerInterface {
-	public static final String URL = "jdbc:oracle:thin:bd2a14/bobas47@ikar.elka.pw.edu.pl:1521/elka.elka.pw.edu.pl";
+	public static final String URL = "jdbc:oracle:thin:LOGIN/PASSWORD@ikar.elka.pw.edu.pl:1521/elka.elka.pw.edu.pl";
 
 	private List<ControllerListener> controllerListeners = new LinkedList<ControllerListener>();
 	private Connection conn;
 	private Statement stmt;
-	private PreparedStatement prepStatement;
+	private PreparedStatement selectReservationStmt;
+	private PreparedStatement addCustomerStmt;
+	private PreparedStatement selectCustomerIDStmt;
+	private PreparedStatement insertReservationStmt;
+	private PreparedStatement selectReservationIDStmt;
+	private PreparedStatement insertPositionStmt;
 	
 	private ControllerInterface.State state = ControllerInterface.State.DISCONNECTED;
 	
@@ -35,30 +34,64 @@ public class Controller implements ControllerInterface {
 		Thread t = new Thread(new Runnable() {
 			@Override
 			public void run() {
-				// TODO
+				ControllerInterface.State currentState = ControllerInterface.State.DISCONNECTED;
+				while (true) {
+					try {
+						if (conn != null) {
+							if (conn.isValid(100))
+								currentState = ControllerInterface.State.CONNECTED;
+							else
+								currentState = ControllerInterface.State.DISCONNECTED;
+							if (!state.equals(currentState))
+								fireSessionStateChanged(currentState);
+						}
+						try {
+							Thread.sleep(1000);
+						} catch (InterruptedException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} catch (Exception e) {
+						e.printStackTrace();
+						continue;
+					}
+				}
 			}
 		});
 		t.start();
 	}
 
 	@Override
-	public void connect() {
+	public void connect(final String login, final String password) {
 		Thread t = new Thread(new Runnable() {
 
 			@Override
 			public void run() {
 				try {
 					OracleDataSource ods = new OracleDataSource();
-					ods.setURL(URL);
+					ods.setURL(URL.replaceAll("LOGIN/PASSWORD", login + "/" + password));
 					conn = ods.getConnection();
 					stmt = conn.createStatement();
-					prepStatement = conn
-							.prepareStatement("SELECT P.NUMER_POKOJU, PR.OD, PR.DO "
-									+ "FROM POKOJE P, POZYCJE_REZERWACJI PR "
-									+ "WHERE P.NUMER_POKOJU = PR.NUMER_POKOJU "
-									+ "AND PR.DO >= ? "
-									+ "AND PR.OD <= ? "
-									+ "ORDER BY P.NUMER_POKOJU");
+					
+					String selectReservation = "SELECT P.NUMER_POKOJU, PR.OD, PR.DO "
+							+ "FROM POKOJE P, POZYCJE_REZERWACJI PR "
+							+ "WHERE P.NUMER_POKOJU = PR.NUMER_POKOJU "
+							+ "AND PR.DO >= ? "
+							+ "AND PR.OD <= ? "
+							+ "ORDER BY P.NUMER_POKOJU";
+					String insertBasicCustomer = "INSERT INTO BASIC_CUSTOMERS VALUES(?,?,?,?)";
+					String selectCustomerID = "SELECT ID_KLIENTA FROM KLIENCI WHERE NUMER_DOKUMENTU = ?";
+					String insertReservation = "INSERT INTO REZERWACJE VALUES (null, ?, ?, 0)";
+					String selectReservationID = "SELECT ID_REZERWACJI FROM REZERWACJE WHERE ID_KLIENTA = ? AND DATA_ZALOZENIA = ?";
+					String insertPosition = "INSERT INTO POZYCJE_REZERWACJI VALUES (?,?,?,?)";
+					
+					selectReservationStmt = conn.prepareStatement(selectReservation);
+					addCustomerStmt = conn.prepareStatement(insertBasicCustomer);
+					selectCustomerIDStmt = conn.prepareStatement(selectCustomerID);
+					insertReservationStmt = conn.prepareStatement(insertReservation);
+					selectReservationIDStmt = conn.prepareStatement(selectReservationID);
+					insertPositionStmt = conn.prepareStatement(insertPosition);
+					
 					fireSessionStateChanged(ControllerInterface.State.CONNECTED);
 				} catch (SQLException e) {
 					fireError(e.getMessage());
@@ -74,7 +107,12 @@ public class Controller implements ControllerInterface {
 	@Override
 	public void disconnect() {
 		try {
-			prepStatement.close();
+			selectReservationStmt.close();
+			addCustomerStmt.close();
+			selectCustomerIDStmt.close();
+			insertReservationStmt.close();
+			selectReservationIDStmt.close();
+			insertPositionStmt.close();
 			stmt.close();
 			conn.close();
 			fireSessionStateChanged(ControllerInterface.State.DISCONNECTED);
@@ -89,24 +127,26 @@ public class Controller implements ControllerInterface {
 
 			@Override
 			public void run() {
+				if (state.equals(ControllerInterface.State.DISCONNECTED)) {
+					fireError(ControllerInterface.State.DISCONNECTED.toString());
+					return;
+				}
 				try {
-					System.out.println("showBookings");
-					prepStatement.setDate(1, from);
-					prepStatement.setDate(2, to);
-					ResultSet rset = prepStatement.executeQuery();
+					selectReservationStmt.setDate(1, from);
+					selectReservationStmt.setDate(2, to);
+					ResultSet rset = selectReservationStmt.executeQuery();
 					DefaultTableModel model = new DefaultTableModel();
 					destTable.setModel(model);
 					model.addColumn("Room");
 					model.addColumn("From");
 					model.addColumn("To");
 					while (rset.next()) {
-						System.out.println("addRow");
 						model.addRow(new Object[] { rset.getInt(1), rset.getDate(2),
 								rset.getDate(3) });
 					}
 					rset.close();
-				} catch (Exception e) {
-					fireError(ControllerInterface.State.DISCONNECTED.toString());
+				} catch (SQLException e) {
+					fireError(e.getMessage());
 					return;
 				}
 			}
@@ -123,38 +163,20 @@ public class Controller implements ControllerInterface {
 			
 			@Override
 			public void run() {
-				OracleDataSource ods;
 				Savepoint save = null;
-				PreparedStatement addCustomerStmt = null;
-				PreparedStatement selectCustomerIDStmt = null;
-				PreparedStatement insertReservationStmt = null;
-				PreparedStatement selectReservationIDStmt = null;
-				PreparedStatement insertPositionStmt = null;
-				
+
+				if (state.equals(ControllerInterface.State.DISCONNECTED)) {
+					fireError(ControllerInterface.State.DISCONNECTED.toString());
+					return;
+				}
 				try {
 					try {
-						ods = new OracleDataSource();
-						ods.setURL(URL);
-						conn = ods.getConnection();
-						fireSessionStateChanged(ControllerInterface.State.CONNECTED);
-						
-						String insertBasicCustomer = "INSERT INTO BASIC_CUSTOMERS VALUES(?,?,?,?)";
-						String selectCustomerID = "SELECT ID_KLIENTA FROM KLIENCI WHERE NUMER_DOKUMENTU = ?";
-						String insertReservation = "INSERT INTO REZERWACJE VALUES (null, ?, ?, 0)";
-						String selectReservationID = "SELECT ID_REZERWACJI FROM REZERWACJE WHERE ID_KLIENTA = ? AND DATA_ZALOZENIA = ?";
-						String insertPosition = "INSERT INTO POZYCJE_REZERWACJI VALUES (?,?,?,?)";
-						
-						
-						
 						// first we check if there is a customer with documentID provided
 						// if customer credentials are different we raise error
-						// 
-						
 						
 						conn.setAutoCommit(false); // begin transaction
 						save = conn.setSavepoint();
 						// insert customer
-						addCustomerStmt = conn.prepareStatement(insertBasicCustomer);
 						addCustomerStmt.setString(1, documentID);
 						addCustomerStmt.setString(2, firstName);
 						addCustomerStmt.setString(3, lastName);
@@ -163,7 +185,6 @@ public class Controller implements ControllerInterface {
 						addCustomerStmt.execute();
 						
 						// get his key
-						selectCustomerIDStmt = conn.prepareStatement(selectCustomerID);
 						selectCustomerIDStmt.setString(1, documentID);
 						
 						ResultSet res = selectCustomerIDStmt.executeQuery();
@@ -173,14 +194,12 @@ public class Controller implements ControllerInterface {
 						}
 						
 						// insert reservation
-						insertReservationStmt = conn.prepareStatement(insertReservation);
 						insertReservationStmt.setInt(1, customerID);
 						insertReservationStmt.setDate(2, new java.sql.Date(new java.util.Date().getTime()));
 						
 						insertReservationStmt.execute();
 						
 						// get reservation id
-						selectReservationIDStmt = conn.prepareStatement(selectReservationID);
 						selectReservationIDStmt.setInt(1, customerID);
 						selectReservationIDStmt.setDate(2, new java.sql.Date(new java.util.Date().getTime()));
 						
@@ -191,7 +210,6 @@ public class Controller implements ControllerInterface {
 						}
 						
 						// insert reservation's position
-						insertPositionStmt = conn.prepareStatement(insertPosition);
 						insertPositionStmt.setInt(1, room);
 						insertPositionStmt.setInt(2, reservationID);
 						insertPositionStmt.setDate(3, from);
@@ -200,26 +218,17 @@ public class Controller implements ControllerInterface {
 						insertPositionStmt.execute();
 						
 						conn.commit();
+						fireNewReservationAdded();
 						
 					} catch (SQLException e) {
 						fireError(e.getMessage());
-						e.printStackTrace();
-						if (conn != null)
-							conn.rollback(save);
+						conn.rollback(save);
 					} finally {
 						conn.setAutoCommit(true);
-						addCustomerStmt.close();
-						selectCustomerIDStmt.close();
-						insertReservationStmt.close();
-						selectReservationIDStmt.close();
-						insertPositionStmt.close();
 					}
 				} catch (SQLException e) {
-					// TODO 
 					e.printStackTrace();
 				}
-				
-				
 			}
 		});
 		t.start();
@@ -229,17 +238,22 @@ public class Controller implements ControllerInterface {
 		controllerListeners.add(cl);
 	}
 
+	protected void fireError(String err) {
+		for(ControllerListener cl : controllerListeners){
+			cl.error(err);
+		}
+	}
+	
 	protected void fireSessionStateChanged(ControllerInterface.State s) {
-		System.out.println("fireSessionStateChanged");
+		state = s;
 		for(ControllerListener cl : controllerListeners){
 			cl.sessionStateChanged(s);
 		}
 	}
 
-	protected void fireError(String err) {
-		System.out.println("fireError");
+	protected void fireNewReservationAdded() {
 		for(ControllerListener cl : controllerListeners){
-			cl.error(err);
+			cl.newReservationAdded();
 		}
 	}
 

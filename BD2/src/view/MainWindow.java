@@ -8,9 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
-import java.sql.Date;
 import java.text.DateFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 import javax.swing.AbstractAction;
@@ -22,6 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
 import javax.swing.JScrollPane;
 import javax.swing.JTabbedPane;
 import javax.swing.JTable;
@@ -57,6 +56,7 @@ public class MainWindow extends JFrame {
 		setTitle("Booking System");
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 799, 632);
+		setLocationRelativeTo(null);
 
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
@@ -122,136 +122,135 @@ public class MainWindow extends JFrame {
 		JPanel bookPanel = new JPanel();
 		tabbedPane.addTab("Book", null, bookPanel, null);
 		bookPanel.setLayout(new BorderLayout(0, 0));
-		
+
 		JPanel panel = new JPanel();
 		FlowLayout flowLayout = (FlowLayout) panel.getLayout();
 		flowLayout.setAlignment(FlowLayout.RIGHT);
 		bookPanel.add(panel, BorderLayout.SOUTH);
-		
+
 		JButton btnAdd = new JButton("Add");
 		panel.add(btnAdd);
-		
-		
+
 		JPanel panel_1 = new JPanel();
 		JScrollPane scrollPane_1 = new JScrollPane(panel_1);
 		panel_1.setLayout(new GridLayout(7, 2, 5, 10));
 		bookPanel.add(scrollPane_1, BorderLayout.CENTER);
-		
+
 		JPanel panel_3 = new JPanel();
 		FlowLayout flowLayout_1 = (FlowLayout) panel_3.getLayout();
 		flowLayout_1.setAlignment(FlowLayout.RIGHT);
 		panel_1.add(panel_3);
-		
+
 		JLabel lblFirstName = new JLabel("First Name:");
 		panel_3.add(lblFirstName);
-		
+
 		JPanel panel_4 = new JPanel();
 		FlowLayout flowLayout_8 = (FlowLayout) panel_4.getLayout();
 		flowLayout_8.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_4);
-		
+
 		firstNameTextField = new JTextField();
 		panel_4.add(firstNameTextField);
 		firstNameTextField.setColumns(10);
-		
+
 		JPanel panel_5 = new JPanel();
 		FlowLayout flowLayout_2 = (FlowLayout) panel_5.getLayout();
 		flowLayout_2.setAlignment(FlowLayout.RIGHT);
 		panel_1.add(panel_5);
-		
+
 		JLabel lblLastName = new JLabel("Last Name:");
 		panel_5.add(lblLastName);
-		
+
 		JPanel panel_6 = new JPanel();
 		FlowLayout flowLayout_9 = (FlowLayout) panel_6.getLayout();
 		flowLayout_9.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_6);
-		
+
 		lastNameTextField = new JTextField();
 		panel_6.add(lastNameTextField);
 		lastNameTextField.setColumns(10);
-		
+
 		JPanel panel_7 = new JPanel();
 		FlowLayout flowLayout_3 = (FlowLayout) panel_7.getLayout();
 		flowLayout_3.setAlignment(FlowLayout.RIGHT);
 		panel_1.add(panel_7);
-		
+
 		JLabel lblDocumentId = new JLabel("Document ID:");
 		panel_7.add(lblDocumentId);
-		
+
 		JPanel panel_8 = new JPanel();
 		FlowLayout flowLayout_10 = (FlowLayout) panel_8.getLayout();
 		flowLayout_10.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_8);
-		
+
 		documentIDTextField = new JTextField();
 		panel_8.add(documentIDTextField);
 		documentIDTextField.setColumns(10);
-		
+
 		JPanel panel_10 = new JPanel();
 		FlowLayout flowLayout_4 = (FlowLayout) panel_10.getLayout();
 		flowLayout_4.setAlignment(FlowLayout.RIGHT);
 		panel_1.add(panel_10);
-		
+
 		JLabel lblPhoneNumber = new JLabel("Phone number:");
 		panel_10.add(lblPhoneNumber);
-		
+
 		JPanel panel_2 = new JPanel();
 		FlowLayout flowLayout_11 = (FlowLayout) panel_2.getLayout();
 		flowLayout_11.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_2);
-		
+
 		phoneNumberTextField = new JTextField();
 		panel_2.add(phoneNumberTextField);
 		phoneNumberTextField.setColumns(10);
-		
+
 		JPanel panel_9 = new JPanel();
 		FlowLayout flowLayout_5 = (FlowLayout) panel_9.getLayout();
 		flowLayout_5.setAlignment(FlowLayout.RIGHT);
 		panel_1.add(panel_9);
-		
+
 		JLabel lblFrom = new JLabel("From:");
 		panel_9.add(lblFrom);
-		
+
 		JPanel panel_12 = new JPanel();
 		FlowLayout flowLayout_12 = (FlowLayout) panel_12.getLayout();
 		flowLayout_12.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_12);
-		
+
 		fromDateTextField = new JTextField();
 		panel_12.add(fromDateTextField);
 		fromDateTextField.setColumns(10);
-		
+
 		JPanel panel_14 = new JPanel();
 		FlowLayout flowLayout_6 = (FlowLayout) panel_14.getLayout();
 		flowLayout_6.setAlignment(FlowLayout.RIGHT);
 		panel_1.add(panel_14);
-		
+
 		JLabel lblTo = new JLabel("To:");
 		panel_14.add(lblTo);
-		
+
 		JPanel panel_11 = new JPanel();
 		FlowLayout flowLayout_13 = (FlowLayout) panel_11.getLayout();
 		flowLayout_13.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_11);
-		
+
 		toDateTextField = new JTextField();
 		panel_11.add(toDateTextField);
 		toDateTextField.setColumns(10);
-		
+
 		JPanel panel_13 = new JPanel();
 		FlowLayout flowLayout_7 = (FlowLayout) panel_13.getLayout();
 		flowLayout_7.setAlignment(FlowLayout.RIGHT);
 		panel_1.add(panel_13);
-		
+
 		JLabel lblRoom = new JLabel("Room:");
 		panel_13.add(lblRoom);
-		
+
 		JPanel panel_15 = new JPanel();
 		FlowLayout flowLayout_14 = (FlowLayout) panel_15.getLayout();
 		flowLayout_14.setAlignment(FlowLayout.LEFT);
 		panel_1.add(panel_15);
-		
+
 		roomNumberTextField = new JTextField();
 		panel_15.add(roomNumberTextField);
 		roomNumberTextField.setColumns(10);
@@ -269,7 +268,6 @@ public class MainWindow extends JFrame {
 
 			@Override
 			public void error(String err) {
-				System.out.println("error");
 				JOptionPane.showMessageDialog(MainWindow.this, err, "Error",
 						JOptionPane.ERROR_MESSAGE);
 			}
@@ -286,6 +284,14 @@ public class MainWindow extends JFrame {
 				}
 			}
 
+			@Override
+			public void newReservationAdded() {
+				JOptionPane.showMessageDialog(MainWindow.this,
+						"New reservation was successfully added.",
+						"New reservation added",
+						JOptionPane.INFORMATION_MESSAGE);
+			}
+
 		});
 
 		addWindowListener(new WindowAdapter() {
@@ -296,9 +302,48 @@ public class MainWindow extends JFrame {
 		});
 
 		AbstractAction connectAction = new AbstractAction() {
+			@SuppressWarnings("deprecation")
 			@Override
 			public void actionPerformed(ActionEvent evt) {
-				controller.connect();
+				// Create a panel that will be use to put
+				// one JTextField, one JPasswordField and two JLabel
+				JPanel panel = new JPanel();
+
+				// Set JPanel layout using GridLayout
+				panel.setLayout(new GridLayout(4, 1));
+
+				// Create a label with text (Username:)
+				JLabel username = new JLabel("Username:");
+
+				// Create a label with text (Password:)
+				JLabel password = new JLabel("Password:");
+
+				// Create text field that will use to enter username
+				JTextField textField = new JTextField(12);
+
+				// Create password field that will be use to enter password
+				JPasswordField passwordField = new JPasswordField(12);
+
+				// Add label with text (username) into created panel
+				panel.add(username);
+
+				// Add text field into created panel
+				panel.add(textField);
+
+				// Add label with text (password) into created panel
+				panel.add(password);
+
+				// Add password field into created panel
+				panel.add(passwordField);
+
+				// Show JOptionPane that will ask user for username and password
+				int a = JOptionPane.showConfirmDialog(MainWindow.this, panel,
+						"Put username and password",
+						JOptionPane.OK_CANCEL_OPTION,
+						JOptionPane.QUESTION_MESSAGE);
+				if (a == JOptionPane.OK_OPTION) {
+					controller.connect(textField.getText(), passwordField.getText());
+				}
 			}
 		};
 
@@ -327,10 +372,10 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				JOptionPane
-				.showMessageDialog(
-						MainWindow.this,
-						"Booking System\n\nAuthors:\nMarek Jasiński\nMarek Lewandowski",
-						"About", JOptionPane.INFORMATION_MESSAGE);
+						.showMessageDialog(
+								MainWindow.this,
+								"Booking System\n\nAuthors:\nMarek Jasiński\nMarek Lewandowski",
+								"About", JOptionPane.INFORMATION_MESSAGE);
 			}
 		};
 
@@ -340,8 +385,6 @@ public class MainWindow extends JFrame {
 			@Override
 			public void actionPerformed(ActionEvent evt) {
 				try {
-					System.out.println("showAction");
-
 					DateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
 
 					java.util.Date parsedFromDate = formater
@@ -357,42 +400,40 @@ public class MainWindow extends JFrame {
 					table.setModel(new DefaultTableModel());
 					controller.showBookings(table, fromDate, toDate);
 				} catch (Exception e) {
-					System.err.println(e.getMessage());
 					JOptionPane.showMessageDialog(MainWindow.this,
 							e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		};
-		
+
 		btnAdd.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				String firstName = firstNameTextField.getText();
-				String lastName = lastNameTextField.getText();
-				String documentID = documentIDTextField.getText();
-				int phoneNumber = Integer.parseInt(phoneNumberTextField.getText());
-				java.sql.Date from = null;
-				java.sql.Date to = null;
-				DateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-				java.util.Date parsedFromDate = null;
-				java.util.Date parsedToDate = null;
 				try {
-					parsedFromDate = formater.parse(fromDateTextField.getText());
-					parsedToDate = formater.parse(toDateTextField.getText());
-					from = new java.sql.Date(parsedFromDate.getTime());
-					to = new java.sql.Date(parsedToDate.getTime());
-				} catch (ParseException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				
-				int room = Integer.parseInt(roomNumberTextField.getText());
-				try {
-					controller.book(firstName, lastName, documentID, phoneNumber, from, to, room);
+					String firstName = firstNameTextField.getText().trim();
+					String lastName = lastNameTextField.getText().trim();
+					String documentID = documentIDTextField.getText().trim();
+
+					int phoneNumber = Integer.parseInt(phoneNumberTextField
+							.getText());
+
+					DateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
+					java.util.Date parsedFromDate = formater
+							.parse(fromDateTextField.getText());
+					java.util.Date parsedToDate = formater
+							.parse(toDateTextField.getText());
+					java.sql.Date from = new java.sql.Date(parsedFromDate
+							.getTime());
+					java.sql.Date to = new java.sql.Date(parsedToDate.getTime());
+
+					int room = Integer.parseInt(roomNumberTextField.getText());
+
+					controller.book(firstName, lastName, documentID,
+							phoneNumber, from, to, room);
 				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
+					JOptionPane.showMessageDialog(MainWindow.this,
+							e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
 				}
 			}
 		});

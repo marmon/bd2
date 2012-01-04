@@ -1,0 +1,28 @@
+ALTER PROCEDURE "BD2A14"."POKOJE_ILOSC_MIEJSC"(IN liczba_miejsc NUMBER(2,0))
+RESULT (numer_pokoju NUMBER(32,0))
+BEGIN
+
+SELECT POKOJE.NUMER_POKOJU
+FROM POKOJE, TYPY_POKOI
+WHERE POKOJE.ID_TYPU_POKOJU = TYPY_POKOI.ID_TYPU_POKOJU
+	AND TYPY_POKOI.LICZBA_MIEJSC = LICZBA_MIEJSC
+
+END;
+
+Procedura zwracająca numery pokoi, w których liczba miejsc jest równa zadanej.
+
+ALTER FUNCTION "BD2A14"."KLIENCI_LICZBA_REZERWACJI"(IN id_klienta NUMBER(32,0))
+RETURNS INTEGER
+BEGIN
+
+DECLARE "lr" INTEGER;
+
+SET lr=(SELECT count(*)
+FROM REZERWACJE
+WHERE REZERWACJE.ID_KLIENTA=id_klienta);
+
+RETURN lr;
+
+END;
+
+Funkcja zwracająca liczbę rezerwacji klienta o podanym ID.
